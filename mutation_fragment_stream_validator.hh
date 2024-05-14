@@ -169,11 +169,17 @@ class mutation_fragment_stream_validating_filter {
     sstring _name_storage;
     std::string_view _name_view; // always valid
     mutation_fragment_stream_validation_level _validation_level;
+    bool _raise_errors;
 
 private:
+<<<<<<< HEAD:mutation_fragment_stream_validator.hh
     sstring full_name() const;
 
     mutation_fragment_stream_validating_filter(const char* name_literal, sstring name_value, const schema& s, mutation_fragment_stream_validation_level level);
+=======
+    mutation_fragment_stream_validating_filter(const char* name_literal, sstring name_value, const schema& s,
+            mutation_fragment_stream_validation_level level, bool raise_errors);
+>>>>>>> f6511ca1b0 (mutation: mutation_fragment_stream_validating_filter: add raises_error ctor parameter):mutation/mutation_fragment_stream_validator.hh
 
 public:
     /// Constructor.
@@ -181,12 +187,21 @@ public:
     /// \arg name is used in log messages to identify the validator, the
     ///     schema identity is added automatically
     /// \arg compare_keys enable validating clustering key monotonicity
-    mutation_fragment_stream_validating_filter(sstring name, const schema& s, mutation_fragment_stream_validation_level level);
-    mutation_fragment_stream_validating_filter(const char* name, const schema& s, mutation_fragment_stream_validation_level level);
+    mutation_fragment_stream_validating_filter(sstring name, const schema& s, mutation_fragment_stream_validation_level level, bool raise_errors = true);
+    mutation_fragment_stream_validating_filter(const char* name, const schema& s, mutation_fragment_stream_validation_level level, bool raise_errors = true);
 
     mutation_fragment_stream_validating_filter(mutation_fragment_stream_validating_filter&&) = delete;
     mutation_fragment_stream_validating_filter(const mutation_fragment_stream_validating_filter&) = delete;
 
+<<<<<<< HEAD:mutation_fragment_stream_validator.hh
+=======
+    sstring full_name() const;
+
+    bool raise_errors() const { return _raise_errors; }
+
+    const mutation_fragment_stream_validator& validator() const { return  _validator; }
+
+>>>>>>> f6511ca1b0 (mutation: mutation_fragment_stream_validating_filter: add raises_error ctor parameter):mutation/mutation_fragment_stream_validator.hh
     bool operator()(const dht::decorated_key& dk);
     bool operator()(mutation_fragment_v2::kind kind, position_in_partition_view pos, std::optional<tombstone> new_current_tombstone);
     bool operator()(mutation_fragment::kind kind, position_in_partition_view pos);
@@ -197,5 +212,10 @@ public:
     void reset(const mutation_fragment_v2& mf);
     /// Equivalent to `operator()(partition_end{})`
     bool on_end_of_partition();
+<<<<<<< HEAD:mutation_fragment_stream_validator.hh
     void on_end_of_stream();
+=======
+    bool on_end_of_stream();
+    mutation_fragment_stream_validator& validator() { return _validator; }
+>>>>>>> f6511ca1b0 (mutation: mutation_fragment_stream_validating_filter: add raises_error ctor parameter):mutation/mutation_fragment_stream_validator.hh
 };
